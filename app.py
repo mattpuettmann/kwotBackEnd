@@ -6,6 +6,14 @@ from flask_cors import CORS
 DEBUG = True
 PORT = 8000
 
+
+
+CORS(users_api, origins= ["http://localhost:3000"], supports_credentials=True)
+app.register_blueprint(users_api, url_prefix='/users')
+
+
+
+
 @app.before_request
 def before_request():
     g.db = models.DATABASE
