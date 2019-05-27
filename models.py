@@ -30,8 +30,6 @@ class User(UserMixin, Model):
         else:
             raise Exception("user with that email already exists ya dingus!!")
 
-
-
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([Quote], safe=True)
