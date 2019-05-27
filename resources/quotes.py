@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, abort
-from flask_restful import (Resource, Api, reqparse, fields, marshal, marshal_with, url_for)
+from flask_restful import Resource, Api, reqparse, fields, marshal, marshal_with, url_for
 import models
 
 quote_fields = {
@@ -44,8 +44,6 @@ class QuoteList(Resource):
         print(args)
         quote = models.Quote.create(**args)
         return (quote, 201)
-
-
 
 
 
@@ -96,7 +94,6 @@ class Quote(Resource):
 
 
 quotes_api = Blueprint('resources.quotes', __name__)
-
 api = Api(quotes_api)
 api.add_resource(
     QuoteList,

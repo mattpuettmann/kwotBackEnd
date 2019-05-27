@@ -30,6 +30,20 @@ class User(UserMixin, Model):
         else:
             raise Exception("user with that email already exists ya dingus!!")
 
+
+
+class Quote(Model):
+    body = CharField()
+    attributed_to = CharField()
+    medium = CharField()
+    created_by = ForeignKeyField(User, related_name='quote_set')
+    created_at = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = DATABASE
+
+
+
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([Quote], safe=True)
