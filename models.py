@@ -30,6 +30,10 @@ class User(UserMixin, Model):
             raise Exception("user with that email already exists ya dingus!!")
 
 
+        
+
+
+
 
 class Quote(Model):
     body = CharField()

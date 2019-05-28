@@ -1,9 +1,10 @@
-from flask import Flask, g
+from flask import Flask, g, abort
 from flask_login import LoginManager
 import models
 from flask_cors import CORS
 from resources.quotes import quotes_api
 from resources.users import users_api
+from flask_login import current_user
 import config
 
 login_manager = LoginManager()
@@ -34,6 +35,7 @@ app.register_blueprint(users_api, url_prefix='/users')
 def before_request():
     g.db = models.DATABASE
     g.db.connect()
+    g.user = current_user
 
 @app.after_request
 def after_request(response):

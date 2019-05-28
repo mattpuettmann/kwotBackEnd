@@ -60,10 +60,55 @@ class UserList(Resource):
 
 
 
+class AuthList(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(
+            'username',
+            required=True,
+            help='No username provided',
+            location=['form', 'json']
+        )
+        self.reqparse.add_argument(
+            'password',
+            required=True,
+            help='No password provided',
+            location=['form', 'json']
+        )
+        super().__init__()
+
+    @marshal_with(user_fields)
+    def get(self):
+        new_users = [marshal(user, user_fields) for user in models.User.select()]
+        return (new_users, 201)
+
+    @marshal_with(user_fields)
+    def post(self):
+        print('user login route hit')
+        args = self.reqparse.parse_args()
+        print(args)
+        user = models.User.get(username=args.username)
+        print(user)
+        if login_user(user):
+            return marshal(user, user_fields), 201
+
+            
+        return make_response(
+            json.dumps({
+                'error': 'Password and password verification do not match'
+            }), 400)
+
+
+
 users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
     '/registration',
     endpoint='users'
+)
+api.add_resource(
+    AuthList,
+    '/login',
+    endpoint='user'
 )

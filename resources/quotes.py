@@ -42,7 +42,7 @@ class QuoteList(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         print(args)
-        quote = models.Quote.create(**args)
+        quote = models.Quote.create(created_by=1, **args)
         return (quote, 201)
 
 
