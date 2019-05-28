@@ -6,11 +6,9 @@ import models
 
 user_fields = {
     'username': fields.String,
-    'email': field.String,
-    'password': field.String
+    'email': fields.String,
+    'password': fields.String
 }
-
-
 
 class UserList(Resource):
     def __init__(self):
