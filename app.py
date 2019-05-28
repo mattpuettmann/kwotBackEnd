@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from flask_login import LoginManager
 import models
 from flask_cors import CORS

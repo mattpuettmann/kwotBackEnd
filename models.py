@@ -3,11 +3,10 @@ from peewee import *
 from flask_bcrypt import generate_password_hash
 from flask_login import UserMixin
 
-DATABASE = SqliteDatabase('quotes')
-# DATABASE = PostgresqlDatabase('quotes', user='mattadmin', password='password')
-
+DATABASE = PostgresqlDatabase('quotes', user='mattadmin', password='password')
 
 class User(UserMixin, Model):
+    id = IntegerField(primary_key=True)
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField()
@@ -46,5 +45,5 @@ class Quote(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([Quote], safe=True)
+    DATABASE.create_tables([User, Quote], safe=True)
     DATABASE.close()

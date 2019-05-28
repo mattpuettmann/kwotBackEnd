@@ -5,9 +5,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 import models
 
 user_fields = {
+    'id': fields.Integer,
     'username': fields.String,
     'email': fields.String,
-    'password': fields.String
+    'password': fields.String,
+    'verify_password': fields.String
 }
 
 class UserList(Resource):
@@ -39,10 +41,15 @@ class UserList(Resource):
         )
         super().__init__()
 
+    @marshal_with(user_fields)
+    def get(self):
+        new_users = [marshal(user, user_fields) for user in models.User.select()]
+        return (new_users, 201)
+
     def post(self):
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
-            print(args, ' this is args')
+            print(args)
             user = models.User.create_user(**args)
             login_user(user)
             return marshal(user, user_fields), 201
