@@ -9,7 +9,6 @@ user_fields = {
     'id': fields.Integer,
     'username': fields.String,
     'email': fields.String,
-
 }
 
 class UserList(Resource):
