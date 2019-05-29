@@ -27,7 +27,7 @@ class User(UserMixin, Model):
             user.save()
             return user
         else:
-            raise Exception("user with that email already exists ya dingus!!")
+            raise Exception("user with that username/email already exists ya dingus!!")
 
 
         

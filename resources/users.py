@@ -2,6 +2,7 @@ import json
 from flask import jsonify, Blueprint, abort, make_response
 from flask_restful import Resource, Api, reqparse, inputs, fields, marshal, marshal_with, url_for
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_bcrypt import check_password_hash, bcrypt
 import models
 
 user_fields = {
@@ -88,15 +89,23 @@ class AuthList(Resource):
         args = self.reqparse.parse_args()
         print(args)
         user = models.User.get(username=args.username)
-        print(user)
-        if login_user(user):
+        candidate = args['password']
+        check = check_password_hash(user.password, candidate)
+        print(check)
+        if check == True:
+            print(user.username, 'this is the user object')
+            print(args.password, 'this is args pw')
+            login_user(user)
             return marshal(user, user_fields), 201
 
-            
-        return make_response(
-            json.dumps({
-                'error': 'Password and password verification do not match'
-            }), 400)
+        print('wrong password ya goof!')
+
+        # return make_response(
+        #     print()
+        #     json.dumps({
+        #         'error': 'Password and password verification do not match'
+        #     }), 400)
+        
 
 
 
