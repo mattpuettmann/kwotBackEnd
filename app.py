@@ -1,7 +1,7 @@
 from flask import Flask, g, abort
 from flask_login import LoginManager
 import models
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from resources.quotes import quotes_api
 from resources.users import users_api
 from flask_login import current_user
@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 app.secret_key = config.SECRET_KEY
 
+
 login_manager.init_app(app)
 
 @login_manager.user_loader
@@ -23,9 +24,8 @@ def load_user(userid):
         return None
 
 
-
 CORS(quotes_api, origins=["http://localhost:3000"], supports_credentials=True)
-CORS(users_api, origins= ["http://localhost:3000"], supports_credentials=True)
+CORS(users_api, origins=["http://localhost:3000"], supports_credentials=True)
 app.register_blueprint(quotes_api, url_prefix='/api/v1')
 app.register_blueprint(users_api, url_prefix='/users')
 
