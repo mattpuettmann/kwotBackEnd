@@ -9,8 +9,7 @@ user_fields = {
     'id': fields.Integer,
     'username': fields.String,
     'email': fields.String,
-    'password': fields.String,
-    'verify_password': fields.String
+
 }
 
 class UserList(Resource):
@@ -47,6 +46,16 @@ class UserList(Resource):
         new_users = [marshal(user, user_fields) for user in models.User.select()]
         return (new_users, 201)
 
+    @marshal_with(user_fields)
+    def get(self, id):
+        print(id)
+        try:
+            user = models.User.get(models.User.id==id)
+        except models.User.DoesNotExist:
+            abort(404)
+        else:
+            return (user, 200)
+
     def post(self):
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
@@ -58,6 +67,14 @@ class UserList(Resource):
             json.dumps({
                 'error': 'Password and password verification do not match'
             }), 400)
+
+    
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        query = models.User.update(**args).where(models.User.id==id)
+        query.execute()
+        print(query)
+        return (models.User.get(models.User.id==id), 200)
 
 
 
@@ -99,12 +116,6 @@ class AuthList(Resource):
             return marshal(user, user_fields), 201
 
         print('wrong password ya goof!')
-
-        # return make_response(
-        #     print()
-        #     json.dumps({
-        #         'error': 'Password and password verification do not match'
-        #     }), 400)
         
 
 
@@ -113,7 +124,7 @@ users_api = Blueprint('resources.users', __name__)
 api = Api(users_api)
 api.add_resource(
     UserList,
-    '/registration',
+    '/registration/<id>',
     endpoint='users'
 )
 api.add_resource(

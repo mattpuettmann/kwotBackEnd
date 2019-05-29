@@ -28,6 +28,14 @@ class User(UserMixin, Model):
             return user
         else:
             raise Exception("user with that username/email already exists ya dingus!!")
+    
+    # @classmethod
+    # def find_user(username):
+    #     try:
+    #         return models.User.get(models.User.username==username)
+    #     except models.DoesNotExist:
+    #         return None
+    
 
 
         
