@@ -81,10 +81,11 @@ class Quote(Resource):
 
     @marshal_with(quote_fields)
     def put(self, id):
+        print('we in busimess')
         args = self.reqparse.parse_args()
         query = models.Quote.update(**args).where(models.Quote.id==id)
         query.execute()
-        print(query)
+        print(query, 'this is query')
         return (models.Quote.get(models.Quote.id==id), 200)
 
     def delete(self, id):
